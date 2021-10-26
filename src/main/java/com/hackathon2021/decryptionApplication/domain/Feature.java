@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
@@ -17,12 +16,11 @@ import java.util.List;
 public class Feature {
 
     @Id
-    private int featureId;
+    private String featureName;
 
     private Date expiryDate;
 
     private int totalNumOfSeatsLicensed;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<NodeDetails> nodeDetails;
+    private int numberOfSeatsUsed = 0;
 }

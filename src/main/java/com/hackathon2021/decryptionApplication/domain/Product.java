@@ -21,4 +21,7 @@ public class Product {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Feature> features;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private NodeDetails nodeDetails;
+
 }
