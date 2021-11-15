@@ -6,25 +6,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class LicenseFile {
 
     @Id
-    private int ProductId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Feature> features;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    private NodeDetails nodeDetails;
+    @Column
+    private byte[] bytes;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private LicenseFile licenseFile;
+    private LicenseKey licenseKey;
 
+    public LicenseFile(byte[] bytes, LicenseKey licenseKey) {
+        this.bytes = bytes;
+        this.licenseKey = licenseKey;
+    }
 }

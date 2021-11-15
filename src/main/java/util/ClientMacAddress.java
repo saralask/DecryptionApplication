@@ -11,14 +11,14 @@ import java.net.UnknownHostException;
 
 public class ClientMacAddress {
 
-    public static String getClientMACAddress(String clientIp){
+    public static String getClientMACAddress(String clientIp) {
         String str = "";
         String macAddress = "";
         try {
             Process p = Runtime.getRuntime().exec("nbtstat -A " + clientIp);
             InputStreamReader ir = new InputStreamReader(p.getInputStream());
             LineNumberReader input = new LineNumberReader(ir);
-            for (int i = 1; i <100; i++) {
+            for (int i = 1; i < 100; i++) {
                 str = input.readLine();
                 if (str != null) {
                     System.out.println(str);
@@ -36,8 +36,7 @@ public class ClientMacAddress {
         return macAddress;
     }
 
-    public static void clientIpAndMacAddress(HttpServletRequest request)
-    {
+    public static void clientIpAndMacAddress(HttpServletRequest request) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String userIpAddress = httpServletRequest.getHeader("X-Forwarded-For");
         if (userIpAddress == null) {
@@ -85,6 +84,7 @@ public class ClientMacAddress {
         } catch (UnknownHostException | SocketException e) {
             e.printStackTrace();
         }
-        return sb.toString();
+        System.out.println("Mac address: " + sb);
+        return sb.toString() + Math.random();
     }
 }
