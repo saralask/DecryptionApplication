@@ -6,21 +6,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Feature {
+public class LicenseKey {
 
     @Id
-    private String featureName;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
-    private Date expiryDate;
+    @Column
+    private byte[] bytes;
 
-    private int totalNumOfSeatsLicensed;
-
-    private int numberOfSeatsUsed = 0;
+    public LicenseKey(byte[] bytes) {
+        this.bytes = bytes;
+    }
 }
