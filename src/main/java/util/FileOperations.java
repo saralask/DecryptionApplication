@@ -1,6 +1,8 @@
 package util;
 
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
 import java.util.zip.ZipEntry;
@@ -44,65 +46,50 @@ public class FileOperations {
         String path = "D:\\WORK\\Hackathon2021\\decryptionApplication\\src\\main\\resources\\file.txt";
         File file = new File(path);
 
-        try{
-            FileOutputStream fos=new FileOutputStream(file.getName(), true);
+        try {
+            FileOutputStream fos = new FileOutputStream(file.getName(), true);
             byte[] bytes = content.getBytes();
             fos.write(bytes);
             fos.close();
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         return file;
     }
 
-    public static void convertToZip(String licenseFilePath, String licenseKeyPath) {
+    public static File convertToZip(String licenseFilePath, String licenseKeyPath) {
 
         String zipFile = "D:\\WORK\\Hackathon2021\\decryptionApplication\\src\\main\\resources\\archive.zip";
-
-        String[] srcFiles = { licenseFilePath, licenseKeyPath};
+        String[] srcFiles = {licenseFilePath, licenseKeyPath};
 
         try {
-
-            // create byte buffer
             byte[] buffer = new byte[1024];
-
             FileOutputStream fos = new FileOutputStream(zipFile);
-
             ZipOutputStream zos = new ZipOutputStream(fos);
 
-            for (int i=0; i < srcFiles.length; i++) {
-
+            for (int i = 0; i < srcFiles.length; i++) {
                 File srcFile = new File(srcFiles[i]);
-
                 FileInputStream fis = new FileInputStream(srcFile);
-
-                // begin writing a new ZIP entry, positions the stream to the start of the entry data
                 zos.putNextEntry(new ZipEntry(srcFile.getName()));
-
                 int length;
-
                 while ((length = fis.read(buffer)) > 0) {
                     zos.write(buffer, 0, length);
                 }
-
                 zos.closeEntry();
-
-                // close the InputStream
                 fis.close();
-
             }
-
-            // close the ZipOutputStream
             zos.close();
-
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             System.out.println("Error creating zip file: " + ioe);
         }
-
+        return new File(zipFile);
     }
 
+    public static MultipartFile convertFileToMultipartFile(File file) throws IOException {
+
+        DiskFileItem fileitem = new DiskFileItem("file", "text/plain", false, file.getName(), (int) file.length(), file.getParentFile());
+        fileitem.getOutputStream();
+        MultipartFile multipartfile = new CommonsMultipartFile(fileitem);
+        return multipartfile;
+    }
 }

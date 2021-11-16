@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -91,13 +90,12 @@ public class DecryptionService {
     }
 
 
-    public void getLicenseFile(int productId) {
+    public File getLicenseFile(int productId) {
         LicenseFile licenseFile = productRepository.getById(productId).getLicenseFile();
         LicenseKey licenseKey = productRepository.getById(productId).getLicenseFile().getLicenseKey();
 
         String licenseFilepath = "D:\\WORK\\Hackathon2021\\decryptionApplication\\src\\main\\resources\\licenseFile.txt";
         try (FileOutputStream fos = new FileOutputStream(licenseFilepath)) {
-            System.out.println(Arrays.toString(licenseFile.getBytes()));
             fos.write(licenseFile.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
@@ -109,8 +107,6 @@ public class DecryptionService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        FileOperations.convertToZip(licenseFilepath, licenseKeypath);
-
+        return FileOperations.convertToZip(licenseFilepath, licenseKeypath);
     }
 }
